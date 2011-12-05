@@ -1,0 +1,31 @@
+.ui-throbber-image {
+	position: absolute;
+	background-image: url("spinner_black32.png");
+	height: 32px;
+	width: 992px;
+	margin: 0;
+	padding: 0;
+	border: 0;
+}
+.ui-throbber {
+	position: absolute;
+	height: 32px;
+	width: 32px;
+	overflow: hidden;
+	margin: 0;
+	padding: 0;
+	border: 0;
+	z-index: 9999;
+}
+
+.ui-throbber-overlay {
+	position: absolute;
+	z-index: 99999;
+	top: 0;
+	left: 0;
+	margin: 0;
+	padding: 0;
+	border: 0;
+	background: transparent !important;
+
+}

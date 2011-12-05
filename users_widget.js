@@ -17,43 +17,46 @@ You should have received a copy of the GNU Affero General Public License
 along with BOINC Widgets.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-google.load("visualization", "1", {packages:["corechart"]});
+google.load("visualization", "1", {packages:["imagesparkline"]});
 google.setOnLoadCallback(init);
 
 function drawChart(days) {
 
+    $.throbber.show({overlay: false});
     if ( days == null ) days = 7;
     var options = { 'days': days, total: 1, with_credit: 1 };
 
     $.getJSON('user_stats.php', options, function(data) {
       var d = new google.visualization.DataTable();
-      d.addColumn('string', 'Date');
+      //d.addColumn('string', 'Date');
       d.addColumn('number', 'New');
       d.addColumn('number', 'Total');
       d.addColumn('number', 'With Credit');
       d.addRows(days + 1);
+      //d.addRows(days + 1);
 
       var x = 0;
       $.each(data["reg_users"][0], function(key, val) {
-        d.setValue(x,0,key);
-        d.setValue(x,1,val);
+        //d.setValue(x,0,key);
+        d.setValue(x,0,val);
         x = x + 1;
       });
 
       var x = 0;
       $.each(data["total"][0], function(key, val) {
-        d.setValue(x,2,val);
+        d.setValue(x,1,val);
         x = x + 1;
       });
 
       var x = 0;
       $.each(data["with_credit"][0], function(key, val) {
-        d.setValue(x,3,val);
+        d.setValue(x,2,val);
         x = x + 1;
       });
 
-      var chart = new google.visualization.LineChart(document.getElementById('chart_div'));
-      chart.draw(d, {width: 600, height: 440, title: 'Number of registered users of Test4Theory'});
+      var chart = new google.visualization.ImageSparkLine(document.getElementById('chart_div'));
+      chart.draw(d, {width: 600, height: 440, fill: true, labelPosition: 'right', title: 'Number of registered users of Test4Theory'});
+      $.throbber.hide();
     });
 
 }

@@ -20,10 +20,12 @@ require_once('../inc/util.inc');
 
 echo '<link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.14/themes/redmond/jquery-ui.css" type="text/css" media="all"/>
 <link rel="stylesheet" href="custom.css" type="text/css"/>
+<link rel="stylesheet" href="throbber/jquery.throbber.css"/>
 <script src="http://code.jquery.com/jquery-1.6.2.min.js" type="text/javascript"></script>
 <script type="text/javascript" src="https://www.google.com/jsapi"></script>
 <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.14/jquery-ui.js"></script>
 <script type="text/javascript" src="users_widget.js"></script>
+<script type="text/javascript" src="throbber/jquery.throbber.js"></script>
 ';
 page_head();
 
