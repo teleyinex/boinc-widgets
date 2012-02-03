@@ -10,4 +10,13 @@ You can try it in the [LHC@Home 2.0 CERN project](http://lhcathome2.cern.ch/test
 Download all the files, copy them to the **html/user** folder and include a link to the **project_stats_charts.php** in the
 **stats.php** file if you want to make it public. Otherwise, visit: http://domain/project/project_stats_charts.php
 
+**NOTE** if you want to see the host charts, you will need to modify one BOINC file: **html/inc/boinc_db.inc** and add the following method to the BoincHost class:
+
+```php
+static function count($clause) {
+    $db = BoincDb::get();
+    return $db->count('host', $clause);
+}
+```
+
 
