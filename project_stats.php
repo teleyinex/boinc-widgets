@@ -1,21 +1,4 @@
 <?php 
-# Copyright 2011 Daniel Lombraña González
-# 
-# This file is part of BOINC Widgets.
-#
-# BOINC Widgets is free software: you can redistribute it and/or modify
-# it under the terms of the GNU Affero General Public License as published by
-# the Free Software Foundation, either version 3 of the License, or
-# (at your option) any later version.
-# 
-# BOINC Widgets is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU Affero General Public License for more details.
-# 
-# You should have received a copy of the GNU Affero General Public License
-# along with BOINC Widgets.  If not, see <http://www.gnu.org/licenses/>.
-
 require_once("../inc/boinc_db.inc");
 
 function to_json($data)
@@ -46,18 +29,17 @@ function to_json($data)
  echo $output;
 }
 
-$user =  new BoincUser();
+if ($_GET['data'] == 'users')
+	$obj =  new BoincUser();
+
+if ($_GET['data'] == 'hosts')
+	$obj = new BoincHost();
 
 date_default_timezone_set('UTC');
 
 $today = mktime(0,0,0,date("m"),date("d"),date("y"));
 
 $json = array();
-
-$json["reg_users"] = array();
-
-if ( $_GET["total"] ) $json["total"] = array();
-if ( $_GET["with_credit"] ) $json["with_credit"] = array();
 
 // By default 7 days, unless http://domain/user_stats.php?days=X passed
 
@@ -71,18 +53,20 @@ for ($i; $i >= 0; $i--)
     $t0 = $today - ( $i * 24 * 60 * 60);
     $t1 = $t0 + 24*60*60;
     $key = date("y-m-d",$t0);
-    if ( $_GET["total"] )
+    if ( $_GET["type"] == "total" )
       {
-         $value = $user->count("create_time < $t1");
-         $json["total"][$key] = $value;
+         $value = $obj->count("create_time < $t1");
+         $json[$_GET["data"]][$key] = $value;
       }
-    if ( $_GET["with_credit"] )
+    if ( $_GET["type"] == "with_credit" )
       {
-         $value = $user->count("create_time < $t1 and total_credit > 0");
-         $json["with_credit"][$key] = $value;
+         $value = $obj->count("create_time < $t1 and total_credit > 0");
+         $json[$_GET["data"]][$key] = $value;
       }
-    $value = $user->count("create_time >= $t0 and create_time < $t1");
-    $json["reg_users"][$key] = $value;
+    if ( $_GET["type"] == "new" ){
+         $value = $obj->count("create_time >= $t0 and create_time < $t1");
+         $json[$_GET["data"]][$key] = $value;
+}
 }
 
 to_json($json);
