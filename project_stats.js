@@ -21,9 +21,10 @@ google.setOnLoadCallback(init);
 function drawChart(options) {
 
     console.log("Drawing charts for " + options.data);
+    console.log("From: " + options.from + " to: " + options.to);
 
     $.throbber.show({overlay: false});
-    if ( options.days == null ) options.days = 7;
+    //if ( options.days == null ) options.days = 7;
     if ( options.type == null) options.type = 'total';
     // options = { 'days': days, total: 1, with_credit: 1 };
 
@@ -36,11 +37,10 @@ function drawChart(options) {
 	      d.addColumn('number', 'Total');
       if (options.type == 'new')
 	      d.addColumn('number', 'New');
-
-      d.addRows(options.days + 1);
-
+ 
       var x = 0;
       $.each(data[options.data][0], function(key, val) {
+	d.addRow();
         d.setValue(x,0,key);
         d.setValue(x,1,val);
         x = x + 1;
@@ -57,18 +57,22 @@ function drawChart(options) {
 function default_charts() {
 
   var data = $("input[@name=data]:checked").val();
+  var from = $("#from").val();
+  var to = $("#to").val();
 
   // New Users or Hosts
-  drawChart({ 'days' : 7, 
+  drawChart({ 'from' : from, 
+	      'to': to,
  	      'data': data,
 	      'type': 'new', 
  	      'div': 'new',  	
 	      'description': 
-	      'New', 
+	      'New registrations', 
 	      'color': ['red']});
 
   // Total registered users or hosts
-  drawChart({ 'days' : 7, 
+  drawChart({ 'from' : from, 
+	      'to': to,
  	      'data': data,
 	      'type': 'total', 
 	      'div': 'total', 
@@ -77,7 +81,8 @@ function default_charts() {
 	      'color': ['blue']});
 
   // Users or hosts with credit
-  drawChart({ 'days' : 7,
+  drawChart({ 'from' : from,
+	      'to': to,
  	      'data': data,
 	      'type': 'with_credit', 
  	      'div': 'with_credit', 
@@ -88,29 +93,43 @@ function default_charts() {
 
 function init() {
 
-  default_charts();
-
-  $("#slider-range").slider({
-     range: "min",
-     value: 7,
-     min: 7,
-     max: 365,
-     slide: function (event, ui) {
-        $("#amount").text( ui.value );
-
-     },
-     stop: function (event, ui) {
-
-  	var data = $("input[@name=data]:checked").val();
-
-        drawChart({'days' : ui.value, 'data': data, 'type': 'new', 'div': 'new', 'description': 'New', 'color': ['red']});
-        drawChart({'days' : ui.value, 'data': data, 'type': 'total', 'div': 'total', 'description': 'Total', 'color': ['blue']});
-        drawChart({'days' : ui.value, 'data': data, 'type': 'with_credit', 'div': 'with_credit', 'description': 'Users with credit', 'color': ['green']});
-     }
-  });
-
-  $( "#amount" ).text( $( "#slider-range" ).slider( "value" )); 
 
   $("input[name='data']").bind("click", default_charts);
+
+  $("button").button();
+
+  var dates = $( "#from, #to" ).datepicker({
+  	defaultDate: "-1w",
+  	changeMonth: true,
+	changeYear: true,
+	minDate: new Date(2010,10,01),
+	maxDate: new Date(),
+	dateFormat: 'yy-mm-dd',
+  	numberOfMonths: 1,
+  	onSelect: function( selectedDate ) {
+  		var option = this.id == "from" ? "minDate" : "maxDate",
+  			instance = $( this ).data( "datepicker" ),
+  			date = $.datepicker.parseDate(
+  				instance.settings.dateFormat ||
+  				$.datepicker._defaults.dateFormat,
+  				selectedDate, instance.settings );
+  		dates.not( this ).datepicker( "option", option, date );
+  	}
+  });
+
+  $("#from").datepicker("setDate","-1w");
+  $("#to").datepicker("setDate", new Date());
+ 
+  $("button").click( function() {
+	var data = $("input[@name=data]:checked").val();
+
+        drawChart({'from': $("#from").val(),'to': $("#to").val(), 'data': data, 'type': 'new', 'div': 'new', 'description': 'New registrations', 'color': ['red']});
+        drawChart({'from': $("#from").val(),'to': $("#to").val(), 'data': data, 'type': 'total', 'div': 'total', 'description': 'Total users', 'color': ['blue']});
+        drawChart({'from': $("#from").val(),'to': $("#to").val(), 'data': data, 'type': 'with_credit', 'div': 'with_credit', 'description': 'Users with credit', 'color': ['green']});
+
+  });
+
+
+  default_charts();
 
 }

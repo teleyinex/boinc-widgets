@@ -36,8 +36,10 @@ echo '<div id="widget">
            	<input type="radio" name="data" id="1" value="users" checked/>Users
            	<input type="radio" name="data" id="2" value="hosts"/>Hosts
         </div>
-        <div>Days to show from today: <span id="amount">7</span></div>
-	<div id="slider-range"></div>
+ 	<div id="dates">
+		<p>From:<input id="from" type="text" name="from"> to: <input id="to" type="text" name="to"></p>
+		<p><button>Draw the line charts!</button></p>
+	</div>
 	<div id="charts">
 		<div id="total"></div>
 		<div id="new"></div>

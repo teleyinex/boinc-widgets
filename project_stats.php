@@ -45,12 +45,16 @@ $json = array();
 
 $i = 7; 
 
+
 if ($_GET['days']) $i = $_GET['days'];
 
+$from =  strtotime($_GET['from']);
+$to = strtotime($_GET['to']);
+$i = ($to - $from)/86400;
 
 for ($i; $i >= 0; $i--)
 {
-    $t0 = $today - ( $i * 24 * 60 * 60);
+    $t0 = $to - ( $i * 24 * 60 * 60);
     $t1 = $t0 + 24*60*60;
     $key = date("y-m-d",$t0);
     if ( $_GET["type"] == "total" )
