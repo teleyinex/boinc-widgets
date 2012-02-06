@@ -1,5 +1,7 @@
 <?php 
 require_once("../inc/boinc_db.inc");
+require_once("../inc/forum_db.inc");
+
 
 function to_json($data)
 {
@@ -35,6 +37,9 @@ if ($_GET['data'] == 'users')
 if ($_GET['data'] == 'hosts')
 	$obj = new BoincHost();
 
+if ($_GET['data'] == 'posts')
+	$obj = new BoincPost();
+
 date_default_timezone_set('UTC');
 
 $today = mktime(0,0,0,date("m"),date("d"),date("y"));
@@ -57,20 +62,33 @@ for ($i; $i >= 0; $i--)
     $t0 = $to - ( $i * 24 * 60 * 60);
     $t1 = $t0 + 24*60*60;
     $key = date("y-m-d",$t0);
-    if ( $_GET["type"] == "total" )
-      {
-         $value = $obj->count("create_time < $t1");
-         $json[$_GET["data"]][$key] = $value;
-      }
-    if ( $_GET["type"] == "with_credit" )
-      {
-         $value = $obj->count("create_time < $t1 and total_credit > 0");
-         $json[$_GET["data"]][$key] = $value;
-      }
-    if ( $_GET["type"] == "new" ){
-         $value = $obj->count("create_time >= $t0 and create_time < $t1");
-         $json[$_GET["data"]][$key] = $value;
-}
+    if ( $_GET["data"] != "posts" ) {
+    	if ( $_GET["type"] == "total" )
+    	  {
+    	     $value = $obj->count("create_time < $t1");
+    	     $json[$_GET["data"]][$key] = $value;
+    	  }
+    	if ( $_GET["type"] == "with_credit" )
+    	  {
+    	     $value = $obj->count("create_time < $t1 and total_credit > 0");
+    	     $json[$_GET["data"]][$key] = $value;
+    	  }
+    	if ( $_GET["type"] == "new" ){
+    	     $value = $obj->count("create_time >= $t0 and create_time < $t1");
+    	     $json[$_GET["data"]][$key] = $value;
+    	}
+    }
+    else {
+	if ( $_GET["type"] == "total" ) {
+	     $value = $obj->count("timestamp < $t1");
+    	     $json[$_GET["data"]][$key] = $value;
+	}
+    	if ( $_GET["type"] == "new" ){
+    	     $value = $obj->count("timestamp >= $t0 and timestamp < $t1");
+    	     $json[$_GET["data"]][$key] = $value;
+    	}
+
+    }
 }
 
 to_json($json);

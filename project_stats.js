@@ -67,7 +67,7 @@ function default_charts() {
 	      'type': 'new', 
  	      'div': 'new',  	
 	      'description': 
-	      'New registrations', 
+	      'New', 
 	      'color': ['red']});
 
   // Total registered users or hosts
@@ -123,9 +123,9 @@ function init() {
   $("button").click( function() {
 	var data = $("input[@name=data]:checked").val();
 
-        drawChart({'from': $("#from").val(),'to': $("#to").val(), 'data': data, 'type': 'new', 'div': 'new', 'description': 'New registrations', 'color': ['red']});
-        drawChart({'from': $("#from").val(),'to': $("#to").val(), 'data': data, 'type': 'total', 'div': 'total', 'description': 'Total users', 'color': ['blue']});
-        drawChart({'from': $("#from").val(),'to': $("#to").val(), 'data': data, 'type': 'with_credit', 'div': 'with_credit', 'description': 'Users with credit', 'color': ['green']});
+        drawChart({'from': $("#from").val(),'to': $("#to").val(), 'data': data, 'type': 'new', 'div': 'new', 'description': 'New', 'color': ['red']});
+        drawChart({'from': $("#from").val(),'to': $("#to").val(), 'data': data, 'type': 'total', 'div': 'total', 'description': 'Total', 'color': ['blue']});
+        if (data != "posts") drawChart({'from': $("#from").val(),'to': $("#to").val(), 'data': data, 'type': 'with_credit', 'div': 'with_credit', 'description': 'With credit', 'color': ['green']});
 
   });
 

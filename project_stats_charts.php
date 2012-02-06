@@ -35,6 +35,7 @@ echo '<div id="widget">
         <div>Type of chart:
            	<input type="radio" name="data" id="1" value="users" checked/>Users
            	<input type="radio" name="data" id="2" value="hosts"/>Hosts
+           	<input type="radio" name="data" id="3" value="posts"/>Forum posts
         </div>
  	<div id="dates">
 		<p>From:<input id="from" type="text" name="from"> to: <input id="to" type="text" name="to"></p>
