@@ -39,7 +39,7 @@ echo '<div id="widget">
         </div>
  	<div id="dates">
 		<p>From:<input id="from" type="text" name="from"> to: <input id="to" type="text" name="to"></p>
-		<p><button>Draw the line charts!</button></p>
+		<p><button>Update the charts!</button></p>
 	</div>
 	<div id="charts">
 		<div id="total"></div>
