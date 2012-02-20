@@ -3,7 +3,7 @@ Copyright 2011 Daniel Lombraña González
 
 Users_Widget.js is free software: you can redistribute it and/or modify
 it under the terms of the GNU Affero General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
+ Free Software Foundation, either version 3 of the License, or
 (at your option) any later version.
 
 Users_Widget.js is distributed in the hope that it will be useful,
@@ -66,8 +66,7 @@ function default_charts() {
  	      'data': data,
 	      'type': 'new', 
  	      'div': 'new',  	
-	      'description': 
-	      'New', 
+	      'description': 'New ' + data, 
 	      'color': ['red']});
 
   // Total registered users or hosts
@@ -76,19 +75,25 @@ function default_charts() {
  	      'data': data,
 	      'type': 'total', 
 	      'div': 'total', 
- 	      'description': 
-	      'Total', 
+ 	      'description': 'Total number of ' + data, 
 	      'color': ['blue']});
 
-  // Users or hosts with credit
-  drawChart({ 'from' : from,
-	      'to': to,
- 	      'data': data,
-	      'type': 'with_credit', 
- 	      'div': 'with_credit', 
-	      'description': 'With credit', 
-	      'color': ['green']});
+  if (data != 'posts') {
+	  // Users or hosts with credit
+          $("#with_credit").show();
+	  drawChart({ 'from' : from,
+		      'to': to,
+	 	      'data': data,
+		      'type': 'with_credit', 
+	 	      'div': 'with_credit', 
+		      'description': 'Number of ' + data + ' with credit', 
+		      'color': ['green']});
+  }
+  else {
+          $("#with_credit").hide();
 
+  }
+	
 }
 
 function init() {
@@ -123,9 +128,9 @@ function init() {
   $("button").click( function() {
 	var data = $("input[@name=data]:checked").val();
 
-        drawChart({'from': $("#from").val(),'to': $("#to").val(), 'data': data, 'type': 'new', 'div': 'new', 'description': 'New', 'color': ['red']});
-        drawChart({'from': $("#from").val(),'to': $("#to").val(), 'data': data, 'type': 'total', 'div': 'total', 'description': 'Total', 'color': ['blue']});
-        if (data != "posts") drawChart({'from': $("#from").val(),'to': $("#to").val(), 'data': data, 'type': 'with_credit', 'div': 'with_credit', 'description': 'With credit', 'color': ['green']});
+        drawChart({'from': $("#from").val(),'to': $("#to").val(), 'data': data, 'type': 'new', 'div': 'new', 'description': 'New ' + data , 'color': ['red']});
+        drawChart({'from': $("#from").val(),'to': $("#to").val(), 'data': data, 'type': 'total', 'div': 'total', 'description': 'Total number of ' + data, 'color': ['blue']});
+        if (data != "posts") drawChart({'from': $("#from").val(),'to': $("#to").val(), 'data': data, 'type': 'with_credit', 'div': 'with_credit', 'description': 'Number of ' + data + ' with credit', 'color': ['green']});
 
   });
 
